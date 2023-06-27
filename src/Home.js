@@ -2,12 +2,13 @@ import React from 'react'
 import  './Home.css'
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
-import { useEffect } from 'react';
 import axios from 'axios';
+import gif from './gif/sun.png'
 
 function Home() {
   const [name, setname] = useState("")
   const [error, seterror] = useState('')
+  const [isLoading, setIsLoading] = useState(false);
   const [data,setData] = useState({
     celcius: 10,
     name:"London",
@@ -18,9 +19,11 @@ function Home() {
 
 const handleSubmit = ()=>{
   if(name!=="") {
+    setIsLoading(true);
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${name}&appid=768dc00a830e4d189098f258949d098c&units=metric`;
     axios.get(apiUrl)
     .then(res => {
+      setIsLoading(false);
       let imagePath = '';
       if(res.data.weather[0].main == "Clouds"){
         imagePath = 'https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather03-512.png'
@@ -44,6 +47,7 @@ const handleSubmit = ()=>{
         seterror('')
     })
     .catch(err => {
+      setIsLoading(false);
       if(err.response.status == 404){
         seterror('Invalid city name')
       }else{
@@ -62,7 +66,13 @@ const handleSubmit = ()=>{
             <div className='error' >
                 <p>{error}</p>
             </div>
-            <div className="winfo" >
+            {isLoading ? (
+              
+        <div className="loading">
+          <img src={gif} alt="" />
+        </div>
+
+      ) : (  <div className="winfo" >
               <img src={data.image} alt="" />
               <h1>{Math.round(data.celcius)}°C</h1>
               <h2>{data.name}</h2>
@@ -82,7 +92,8 @@ const handleSubmit = ()=>{
                   </div>
                 </div>
               </div>
-            </div>
+            </div>)
+            }
         </div>
     </div>
   )

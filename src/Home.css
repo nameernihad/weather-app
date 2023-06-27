@@ -12,8 +12,10 @@
     padding: 30px;
     border-radius: 10px;
     margin: 50px auto;
+    height: 620px;
     text-align: center;
     color: white;
+    position: relative;
     background: linear-gradient(130deg, rgb(86,86,235),rgb(5,5,199));
 }
 .search{
@@ -85,3 +87,24 @@
     text-align: left;
     margin-left: 15px;
 }
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    bottom: 50%;
+    transform: translateX(-30px);
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loading img {
+    animation: spin 2s infinite linear;
+    width: 60px;
+  }
